@@ -1,5 +1,5 @@
 import addon from "../build/Release/binding.node";
 
 export function hello() {
-    addon.hello();
+    return addon.hello();
 }
