@@ -21,9 +21,9 @@
     },
     "files": [
         "binding.gyp",
-        "lib/fonttools.cc",
-        "fonttools",
-        "dist"
+        "yarn.lock",
+        "dist",
+        "dist.es2015"
     ],
     "devDependencies": {
         "@types/jest": "^26.0.22",
