@@ -1,5 +1,6 @@
-import addon from "../build/Release/binding.node";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const addon = require("bindings")("yrp-replay-addon.node");
 
-export function hello() {
-    return addon.lzmaUncompress(3, 2);
+export function uncompressReplayData(buffer: Buffer): Buffer {
+    return addon.uncompressReplayData(buffer);
 }
