@@ -16,7 +16,8 @@
         "prebuild:addons": "node-gyp configure",
         "build:addons": "node-gyp build",
         "prebuild": "npm run build:addons",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "npm run build",
+        "start:dev": "ts-node src/test.ts"
     },
     "files": [
         "binding.gyp",
@@ -35,6 +36,7 @@
         "node-gyp": "^7.1.2",
         "prettier": "^2.2.1",
         "ts-jest": "^26.5.4",
+        "ts-node": "^9.1.1",
         "typescript": "^4.2.3"
     },
     "jest": {
@@ -53,5 +55,9 @@
             "json",
             "node"
         ]
+    },
+    "dependencies": {
+        "bindings": "^1.5.0",
+        "node-addon-api": "^3.1.0"
     }
 }
