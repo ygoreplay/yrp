@@ -1,0 +1,6 @@
+/build
+/node_modules
+/.idea
+/.vs
+/dist
+/dist.es2015
