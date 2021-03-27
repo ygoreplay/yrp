@@ -4,3 +4,4 @@
 /.vs
 /dist
 /dist.es2015
+/coverage
