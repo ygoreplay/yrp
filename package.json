@@ -18,7 +18,7 @@
         ]
     },
     "scripts": {
-        "install": "prebuild-install || npm run build",
+        "install": "prebuild-install || npm run build:addons",
         "dev": "rimraf dist/ dist.es2015/ && tsc --watch",
         "lint": "eslint \"src/**/*.ts\" --fix",
         "build": "rimraf dist/ dist.es2015/ && tsc && tsc -P tsconfig.es2015.json",
