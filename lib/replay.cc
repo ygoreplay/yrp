@@ -42,6 +42,10 @@ Replay::~Replay() {
 		delete this->buffer;
 	}
 
+	if (this->decompressedBuffer) {
+		delete this->decompressedBuffer;
+	}
+
 	if (this->header) {
 		delete this->header;
 	}
