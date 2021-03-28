@@ -1,8 +1,15 @@
 import * as fs from "fs";
 import * as path from "path";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const addon = require("bindings")("yrp.node");
-const buffer = fs.readFileSync(path.join(process.cwd(), "./res/yrp-basic.yrp"));
+import { Replay } from ".";
 
-console.log(addon.uncompressReplayData(buffer));
+import * as SegfaultHandler from "segfault-handler";
+
+SegfaultHandler.registerHandler("crash.log");
+
+(async () => {
+    const buffer = fs.readFileSync(path.join(process.cwd(), "./res/yrp-basic.yrp"));
+    const replay = await Replay.fromBuffer(buffer);
+
+    console.log(replay.getReplayHeader().props.length);
+})();

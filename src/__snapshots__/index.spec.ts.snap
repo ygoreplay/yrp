@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`yrp should uncompress replay header information from file properly 1`] = `
+Object {
+  "dataSize": 442,
+  "flag": 1,
+  "hash": 0,
+  "id": 829452921,
+  "props": Object {
+    "data": Array [
+      93,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+    ],
+    "type": "Buffer",
+  },
+  "seed": 1616370681,
+  "version": 4946,
+}
+`;
+
+exports[`yrp should uncompress replay header information properly 1`] = `
+Object {
+  "dataSize": 442,
+  "flag": 1,
+  "hash": 0,
+  "id": 829452921,
+  "props": Object {
+    "data": Array [
+      93,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+    ],
+    "type": "Buffer",
+  },
+  "seed": 1616370681,
+  "version": 4946,
+}
+`;

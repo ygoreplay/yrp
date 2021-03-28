@@ -10,6 +10,8 @@
             ],
             "sources": [
                 "lib/binding.cc",
+                "lib/buffer.cc",
+                "lib/replay.cc",
                 "lib/lzma/Alloc.cc",
                 "lib/lzma/LzFind.cc",
                 "lib/lzma/LzmaDec.cc",
