@@ -1,7 +1,7 @@
 {
     "targets": [
         {
-            "target_name": "yrp-replay-addon",
+            "target_name": "yrp",
             "cflags!": [
                 "-fno-exceptions"
             ],
