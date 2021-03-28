@@ -11,6 +11,12 @@
         "type": "git",
         "url": "https://github.com/ygoreplay/yrp.git"
     },
+    "binary": {
+        "napi_versions": [
+            2,
+            3
+        ]
+    },
     "scripts": {
         "install": "prebuild-install || npm run build",
         "dev": "rimraf dist/ dist.es2015/ && tsc --watch",
