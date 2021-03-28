@@ -1,6 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`yrp should uncompress replay header information from file properly 1`] = `
+exports[`yrp should retrieve player names 1`] = `
+Array [
+  "가나다라",
+  "Player",
+]
+`;
+
+exports[`yrp should retrieve replay header information 1`] = `
 Object {
   "dataSize": 442,
   "flag": 1,
@@ -24,7 +31,7 @@ Object {
 }
 `;
 
-exports[`yrp should uncompress replay header information properly 1`] = `
+exports[`yrp should retrieve replay header information from file 1`] = `
 Object {
   "dataSize": 442,
   "flag": 1,

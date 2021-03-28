@@ -12,6 +12,7 @@ private:
 
 public:
 	std::uint8_t* data(void);
+	std::size_t size(void) const;
 
 public:
 	template<typename T>

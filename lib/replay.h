@@ -8,18 +8,26 @@ public:
 
 public:
 	Replay(const Napi::CallbackInfo& info);
+	~Replay(void);
 
 // -> NodeJS
 private:
 	Napi::Value getHeaderInformation(const Napi::CallbackInfo& info);
-
+	Napi::Value getPlayerNames(const Napi::CallbackInfo& info);
+	
 // -> C++
 private:
 	void parseHeaderInformation(Napi::Env& env);
+	void parsePlayerNames(Napi::Env& env);
+	void decompressData(Napi::Env& env);
+	void getName(char16_t* data);
 
 private:
 	Buffer* buffer;
+	Buffer* decompressedBuffer;
 	ReplayHeader* header;
+
+	std::vector<std::u16string> playerNames;
 };
 
 #endif

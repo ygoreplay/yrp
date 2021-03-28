@@ -29,3 +29,6 @@ std::size_t Buffer::moveCursorForward(size_t byteLength) {
 std::uint8_t* Buffer::data(void) {
 	return this->_data;
 }
+std::size_t Buffer::size(void) const {
+	return this->byteLength;
+}

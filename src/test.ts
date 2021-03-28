@@ -11,5 +11,6 @@ SegfaultHandler.registerHandler("crash.log");
     const buffer = fs.readFileSync(path.join(process.cwd(), "./res/yrp-basic.yrp"));
     const replay = await Replay.fromBuffer(buffer);
 
-    console.log(replay.getReplayHeader().props.length);
+    console.log(replay.getReplayHeader());
+    console.log(replay.getPlayerNames());
 })();

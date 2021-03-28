@@ -6,6 +6,7 @@ const NativeReplay: { new (buffer: Buffer): NativeReplay } = addon.Replay;
 
 interface NativeReplay {
     getHeaderInformation(): ReplayHeader;
+    getPlayerNames(): string[];
 }
 
 export interface ReplayHeader {
@@ -30,18 +31,19 @@ export class Replay {
     }
 
     private readonly native: NativeReplay;
-    private replayHeader: ReplayHeader | null;
+    private readonly replayHeader: ReplayHeader;
+    private readonly playerNames: string[];
 
     private constructor(nativeReplay: NativeReplay) {
         this.native = nativeReplay;
-        this.replayHeader = null;
+        this.replayHeader = this.native.getHeaderInformation();
+        this.playerNames = this.native.getPlayerNames();
     }
 
     public getReplayHeader() {
-        if (!this.replayHeader) {
-            this.replayHeader = this.native.getHeaderInformation();
-        }
-
         return { ...this.replayHeader };
+    }
+    public getPlayerNames() {
+        return [...this.playerNames];
     }
 }
