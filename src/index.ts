@@ -38,7 +38,7 @@ export class Replay {
     }
 
     public getReplayHeader() {
-        if (this.replayHeader) {
+        if (!this.replayHeader) {
             this.replayHeader = this.native.getHeaderInformation();
         }
 
