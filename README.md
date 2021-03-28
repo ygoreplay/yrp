@@ -19,3 +19,34 @@
   <br />
   <br />
 </div>
+
+## Purpose of development
+
+We already know most of the YGOPro/EDOPro related projects are quite obsolete and hard to contribute since they are developed in quite low level (or not-using) languages. (e.g. CoffeeScript, C/C++, etc.) we know those ecosystems will eventually occur tons of problem. so I had decided to resolve this issues in _**modern**_ and _**elegant**_ way.
+
+so this is a native parser project for node environment. this means I want to live lazy like other webdevs 😂. but you would  realize that providing modules for productive languages  can have a lot of impact on improving development ecosystem of YGOPro/EDOPro.
+
+## Installation
+
+*Note: you should use Node with version >= 12.*
+
+```
+npm i yrp
+```
+
+or if you use [yarn](https://github.com/yarnpkg/berry):
+
+```
+yarn add yrp
+```
+
+## How to use
+
+```tsx
+import { Replay } from "yrp";
+
+// ...
+
+// of course you can load replay from raw buffer too!
+const replay = await Replay.fromFile("./target-file.yrp");
+```
