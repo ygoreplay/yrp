@@ -81,6 +81,7 @@
         "fs-extra": "^9.1.0",
         "node-addon-api": "^3.1.0",
         "prebuild-install": "^6.0.1",
+        "rimraf": "^3.0.2",
         "tslib": "^2.1.0"
     }
 }
