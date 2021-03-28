@@ -1,6 +1,6 @@
 {
     "name": "yrp",
-    "version": "1.1.1",
+    "version": "1.1.0",
     "author": "Sophia <beyondthesophia@gmail.com>",
     "license": "MIT",
     "main": "dist/index.js",
@@ -32,6 +32,7 @@
         "semantic-release": "semantic-release"
     },
     "files": [
+        "lib",
         "binding.gyp",
         "yarn.lock",
         "dist",
