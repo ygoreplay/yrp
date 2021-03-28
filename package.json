@@ -1,5 +1,5 @@
 {
-    "name": "yrp-parser-addon",
+    "name": "yrp",
     "version": "0.1.0",
     "author": "Sophia <beyondthesophia@gmail.com>",
     "license": "MIT",
@@ -7,6 +7,10 @@
     "typings": "dist/index.d.ts",
     "jsnext:main": "dist.es2015/index.js",
     "module": "dist.es2015/index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ygoreplay/yrp.git"
+    },
     "scripts": {
         "dev": "rimraf dist/ dist.es2015/ && tsc --watch",
         "lint": "eslint \"src/**/*.ts\" --fix",

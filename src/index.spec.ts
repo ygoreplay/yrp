@@ -2,7 +2,7 @@ import { uncompressReplayData } from ".";
 import * as fs from "fs";
 import path from "path";
 
-describe("yrp-parser-addon", () => {
+describe("yrp", () => {
     it("should uncompress replay data properly", () => {
         const originalFileBuffer = fs.readFileSync(path.join(process.cwd(), "./res/yrp-basic.yrp"));
 
