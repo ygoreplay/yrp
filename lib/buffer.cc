@@ -17,7 +17,7 @@ bool Buffer::checkIfCursorMovable(size_t byteLength) {
 }
 std::size_t Buffer::moveCursorForward(size_t byteLength) {
 	if (this->cursor + byteLength >= this->byteLength) {
-		throw std::invalid_argument("Tried to read out of data length.");
+		return false;
 	}
 
 	std::size_t currentCursor = this->cursor;
