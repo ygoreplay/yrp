@@ -1,0 +1,90 @@
+on:
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
+    release:
+        types:
+            - created
+
+jobs:
+    CI:
+        runs-on: ${{ matrix.os }}
+        container: ${{ matrix.container }}
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - os: ubuntu-20.04
+                      container: ubuntu:18.04
+                      nodejs_version: 10
+                      prebuild: true
+                    - os: ubuntu-20.04
+                      container: ubuntu:18.04
+                      nodejs_version: 12
+                    - os: ubuntu-20.04
+                      container: ubuntu:18.04
+                      nodejs_version: 14
+                    - os: ubuntu-20.04
+                      container: ubuntu:18.04
+                      nodejs_version: 15
+                    - os: ubuntu-20.04
+                      container: node:10-alpine3.11
+                      prebuild: true
+                    - os: ubuntu-20.04
+                      container: node:12-alpine3.11
+                    - os: ubuntu-20.04
+                      container: node:14-alpine3.11
+                    - os: ubuntu-20.04
+                      container: node:15-alpine3.11
+                    - os: macos-10.15
+                      nodejs_version: 10
+                      prebuild: true
+                    - os: macos-10.15
+                      nodejs_version: 12
+                    - os: macos-10.15
+                      nodejs_version: 14
+                    - os: macos-10.15
+                      nodejs_version: 15
+                    - os: windows-2019
+                      nodejs_version: 10
+                      prebuild: true
+                    - os: windows-2019
+                      nodejs_version: 12
+                    - os: windows-2019
+                      nodejs_version: 14
+                    - os: windows-2019
+                      nodejs_version: 15
+        env:
+            CXXFLAGS: "-march=corei7 -mno-avx -mno-aes -mno-f16c"
+        steps:
+            - name: Dependencies (Linux glibc)
+              if: contains(matrix.container, 'ubuntu')
+              run: |
+                  apt update
+                  apt install -y g++ make git python3
+            - name: Dependencies (Linux musl)
+              if: contains(matrix.container, 'alpine')
+              run: apk add build-base git python3 --update-cache
+            - name: Dependencies (macOS, Windows)
+              if: contains(matrix.os, 'macos') || contains(matrix.os, 'windows') || contains(matrix.container, 'ubuntu')
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.nodejs_version }}
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Install
+              run: npm install --build-from-source --unsafe-perm
+            - name: Test
+              run: npm test
+            - name: Prebuild
+              if: matrix.prebuild && startsWith(github.ref, 'refs/tags/')
+              env:
+                  prebuild_upload: ${{ secrets.GH_TOKEN }}
+              run: npx prebuild --runtime napi --target 3
+            - name: Release
+              if: matrix.prebuild && contains(matrix.container, 'alpine')
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: npx semantic-release

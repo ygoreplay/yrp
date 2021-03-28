@@ -1,0 +1,24 @@
+{
+    "branches": [
+        "master",
+        {
+            "name": "dev",
+            "prerelease": "beta",
+            "channel": "next"
+        }
+    ],
+    "ci": true,
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        "@semantic-release/npm",
+        "@semantic-release/github",
+        [
+            "@semantic-release/git",
+            {
+                "assets": ["CHANGELOG.md", "package.json"],
+                "message": "chore(\uD83D\uDCE6): ${nextRelease.version}\n\n${nextRelease.notes}"
+            }
+        ]
+    ]
+}
