@@ -90,3 +90,9 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
               run: npx semantic-release
+            - name: Upload Coverage
+              env:
+                  CODECOV_TOKEN: c43b2d7c-1d66-4cca-a240-f794b2dce988
+              run: |
+                  npm install -g codecov
+                  codecov
