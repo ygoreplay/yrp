@@ -1,6 +1,6 @@
 {
     "name": "yrp",
-    "version": "1.3.0-beta.1",
+    "version": "1.3.0",
     "author": "Sophia <beyondthesophia@gmail.com>",
     "license": "MIT",
     "main": "dist/index.js",
