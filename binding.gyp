@@ -2,12 +2,8 @@
     "targets": [
         {
             "target_name": "yrp",
-            "cflags!": [
-                "-fno-exceptions"
-            ],
-            "cflags_cc!": [
-                "-fno-exceptions"
-            ],
+            "cflags!": ["-fno-exceptions"],
+            "cflags_cc!": ["-fno-exceptions"],
             "sources": [
                 "lib/binding.cc",
                 "lib/buffer.cc",
@@ -26,7 +22,28 @@
                 "<!(node -p \"require('node-addon-api').gyp\")"
             ],
             "defines": [
-                "NAPI_DISABLE_CPP_EXCEPTIONS"
+                "NAPI_CPP_EXCEPTIONS"
+            ],
+            "conditions": [
+                ["OS==\"mac\"", {
+                    "cflags+": ["-fvisibility=hidden"],
+                    "xcode_settings": {
+                        "GCC_SYMBOLS_PRIVATE_EXTERN": "YES",
+                        "GCC_ENABLE_CPP_EXCEPTIONS": "YES"
+                    }
+                }],
+                ["OS==\"linux\"", {
+                    "defines": ["LINK_PLATFORM_LINUX=1"],
+                    "cflags": ["-fexceptions"],
+                    "cflags_cc": ["-fexceptions"]
+                }],
+                ["OS==\"win\"", {
+                    "msvs_settings": {
+                        "VCCLCompilerTool": {
+                            "ExceptionHandling": "2"
+                        }
+                    }
+                }]
             ]
         }
     ]
