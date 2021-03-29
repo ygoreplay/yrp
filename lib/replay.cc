@@ -6,6 +6,7 @@ Napi::Object Replay::Init(Napi::Env env, Napi::Object exports) {
         InstanceMethod("getPlayerNames", &Replay::getPlayerNames),
         InstanceMethod("getScriptName", &Replay::getScriptName),
         InstanceMethod("getParameters", &Replay::getParameters),
+        InstanceMethod("getDecks", &Replay::getDecks),
     });
 	Napi::FunctionReference* constructor = new Napi::FunctionReference();
 	*constructor = Napi::Persistent(func);
@@ -40,6 +41,10 @@ Replay::Replay(const Napi::CallbackInfo& info):
 	this->decompressData(env);
 	this->parsePlayerNames(env);
 	this->parseParams(env);
+
+	if (this->header->id == REPLAY_YRP1) {
+		this->parseDecks(env);
+	}
 }
 Replay::~Replay() {
 	if (this->buffer) {
@@ -91,10 +96,34 @@ Napi::Value Replay::getParameters(const Napi::CallbackInfo& info) {
 
 	return parameters;
 }
-
 Napi::Value Replay::getScriptName(const Napi::CallbackInfo& info) {
     auto env = info.Env();
 	return Napi::String::New(env, this->scriptName.c_str());
+}
+Napi::Value Replay::getDecks(const Napi::CallbackInfo& info) {
+    auto env = info.Env();
+	auto generateArray = [&env](const std::vector<uint32_t>& cards) {
+		auto cardArray = Napi::Array::New(env, cards.size());
+		for (size_t i = 0, j = cards.size(); i < j; ++i) {
+			cardArray.Set(i, cards[i]);
+		}
+
+		return cardArray;
+	};
+
+	auto deckObjectArray = Napi::Array::New(env, this->decks.size());
+	for (size_t i = 0; i < this->decks.size(); ++i) {
+		const auto& main = this->decks[i].main;
+		const auto& extra = this->decks[i].extra;
+
+		auto deckObject = Napi::Object::New(env);
+        deckObject.Set(Napi::String::New(env, "main"), generateArray(main));
+        deckObject.Set(Napi::String::New(env, "extra"), generateArray(extra));
+
+		deckObjectArray.Set(i, deckObject);
+    }
+
+	return deckObjectArray;
 }
 
 void Replay::parseHeaderInformation(Napi::Env& env) {
@@ -116,7 +145,7 @@ void Replay::parsePlayerNames(Napi::Env& env) {
 		this->awayPlayerCount = 1;
 	}
 
-    auto parse = [this](uint32_t& count) {
+    auto parse = [this, &env](uint32_t& count) {
         if (this->header->flag & REPLAY_NEWREPLAY)
             count = this->decompressedBuffer->read<uint32_t>();
         else if (this->header->flag & REPLAY_TAG)
@@ -152,6 +181,36 @@ void Replay::parseParams(Napi::Env& env) {
 		this->scriptName.resize(len);
 		this->decompressedBuffer->readItem(&scriptName[0], len);
 	}
+}
+void Replay::parseDecks(Napi::Env& env) {
+    if (this->header->id != REPLAY_YRP1 || (this->header->flag & REPLAY_SINGLE_MODE && !(this->header->flag & REPLAY_HAND_TEST)))
+        return;
+
+	auto readCards = [this](std::vector<uint32_t>& cards, uint32_t count) {
+		uint32_t cardId = 0;
+		for (uint32_t i = 0; i < count; ++i) {
+            cards.push_back(this->decompressedBuffer->read<uint32_t>());
+		}
+	};
+
+    for (uint32_t i = 0, j = this->homePlayerCount + this->awayPlayerCount; i < j; ++i) {
+        Deck deck;
+
+		uint32_t mainCount = this->decompressedBuffer->read<uint32_t>();
+        readCards(deck.main, mainCount);
+
+		uint32_t extraCount = this->decompressedBuffer->read<uint32_t>();
+        readCards(deck.extra, extraCount);
+
+        this->decks.push_back(std::move(deck));
+    }
+
+    this->customRuleCards.clear();
+    if (this->header->flag & REPLAY_NEWREPLAY && !(this->header->flag & REPLAY_HAND_TEST)) {
+        uint32_t rules = this->decompressedBuffer->read<uint32_t>();
+        for (uint32_t i = 0; i < rules; ++i)
+            this->customRuleCards.push_back(this->decompressedBuffer->read<uint32_t>());
+    }
 }
 void Replay::decompressData(Napi::Env& env) {
 	std::vector<std::uint8_t> replayData;

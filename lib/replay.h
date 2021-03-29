@@ -16,12 +16,14 @@ private:
 	Napi::Value getPlayerNames(const Napi::CallbackInfo& info);
 	Napi::Value getParameters(const Napi::CallbackInfo& info);
 	Napi::Value getScriptName(const Napi::CallbackInfo& info);
+	Napi::Value getDecks(const Napi::CallbackInfo& info);
 	
 // -> C++
 private:
 	void parseHeaderInformation(Napi::Env& env);
 	void parsePlayerNames(Napi::Env& env);
 	void parseParams(Napi::Env& env);
+	void parseDecks(Napi::Env& env);
 	void decompressData(Napi::Env& env);
 	void getName(char16_t* data);
 
@@ -32,7 +34,9 @@ private:
 
 	ReplayParameters parameters;
 	std::vector<std::u16string> playerNames;
-	std::string scriptName;
+    std::vector<Deck> decks;
+	std::vector<uint32_t> customRuleCards;
+    std::string scriptName;
 
 	uint32_t homePlayerCount;
 	uint32_t awayPlayerCount;

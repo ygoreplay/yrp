@@ -11,4 +11,5 @@ import { Replay } from ".";
     console.log(replay.getPlayerNames());
     console.info(replay.getScriptName());
     console.info(replay.getParameter());
+    console.info(replay.getDecks());
 })();

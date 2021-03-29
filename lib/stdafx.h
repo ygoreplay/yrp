@@ -9,6 +9,8 @@
 
 #include "buffer.h"
 
+#include "deck.h"
+
 #include "replay-parameters.h"
 #include "replay-header.h"
 #include "replay.h"

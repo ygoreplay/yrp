@@ -2,12 +2,6 @@
     "targets": [
         {
             "target_name": "yrp",
-            "cflags!": [
-                "-fno-exceptions"
-            ],
-            "cflags_cc!": [
-                "-fno-exceptions"
-            ],
             "sources": [
                 "lib/binding.cc",
                 "lib/buffer.cc",
@@ -26,8 +20,16 @@
                 "<!(node -p \"require('node-addon-api').gyp\")"
             ],
             "defines": [
-                "NAPI_DISABLE_CPP_EXCEPTIONS"
-            ]
+                "NAPI_CPP_EXCEPTIONS"
+            ],
+            "msvs_settings": {
+                "VCCLCompilerTool": {
+                    "AdditionalOptions": [
+                        "/std:c++17",
+                        "/EHsc"
+                    ]
+                }
+            }
         }
     ]
 }

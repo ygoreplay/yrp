@@ -31,7 +31,7 @@ public:
         T result;
         std::size_t moveLength = sizeof(T);
         if (!this->checkIfCursorMovable(moveLength)) {
-            return result;
+            throw std::exception("Unexpected end of buffer");
         }
 
         memcpy(&result, this->_data + this->moveCursorForward(moveLength), moveLength);

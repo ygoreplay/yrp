@@ -1,4 +1,5 @@
 import * as fs from "fs-extra";
+import cloneDeep from "lodash.clonedeep";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const addon = require("bindings")("yrp.node");
@@ -9,6 +10,7 @@ interface NativeReplay {
     getPlayerNames(): string[];
     getParameters(): ReplayParameter;
     getScriptName(): string;
+    getDecks(): Deck[];
 }
 
 export interface ReplayHeader {
@@ -28,6 +30,11 @@ export interface ReplayParameter {
     duelFlags: number;
 }
 
+export interface Deck {
+    main: number[];
+    extra: number[];
+}
+
 export class Replay {
     public static async fromFile(path: string) {
         const buffer = await fs.readFile(path);
@@ -42,6 +49,7 @@ export class Replay {
     private readonly native: NativeReplay;
     private readonly header: ReplayHeader;
     private readonly parameter: ReplayParameter;
+    private readonly decks: Deck[];
     private readonly scriptName: string;
     private readonly playerNames: string[];
 
@@ -51,6 +59,7 @@ export class Replay {
         this.parameter = this.native.getParameters();
         this.playerNames = this.native.getPlayerNames();
         this.scriptName = this.native.getScriptName();
+        this.decks = this.native.getDecks();
     }
 
     public getHeader() {
@@ -64,5 +73,8 @@ export class Replay {
     }
     public getScriptName() {
         return this.scriptName;
+    }
+    public getDecks() {
+        return cloneDeep(this.decks);
     }
 }
