@@ -8,12 +8,12 @@ describe("yrp", () => {
         const originalFileBuffer = fs.readFileSync(path.join(process.cwd(), "./res/yrp-basic.yrp"));
         const replay = Replay.fromBuffer(originalFileBuffer);
 
-        expect(replay.getReplayHeader()).toMatchSnapshot();
+        expect(replay.getHeader()).toMatchSnapshot();
     });
 
     it("should retrieve replay header information from file", async () => {
         const replay = await Replay.fromFile(path.join(process.cwd(), "./res/yrp-basic.yrp"));
-        expect(replay.getReplayHeader()).toMatchSnapshot();
+        expect(replay.getHeader()).toMatchSnapshot();
     });
 
     it("should retrieve player names", async () => {
@@ -27,13 +27,13 @@ describe("yrp", () => {
         const originalFileBuffer = fs.readFileSync(path.join(process.cwd(), "./res/yrp-basic.yrp"));
         const replay = Replay.fromBuffer(originalFileBuffer);
 
-        expect(replay.getReplayParameter()).toMatchSnapshot();
+        expect(replay.getParameter()).toMatchSnapshot();
     });
 
     it("should retrieve replay script name", async () => {
         const originalFileBuffer = fs.readFileSync(path.join(process.cwd(), "./res/yrp-basic.yrp"));
         const replay = Replay.fromBuffer(originalFileBuffer);
 
-        expect(replay.getReplayScriptName()).toMatchSnapshot();
+        expect(replay.getScriptName()).toMatchSnapshot();
     });
 });

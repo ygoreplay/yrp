@@ -40,29 +40,29 @@ export class Replay {
     }
 
     private readonly native: NativeReplay;
-    private readonly replayHeader: ReplayHeader;
-    private readonly replayParameter: ReplayParameter;
-    private readonly replayScriptName: string;
+    private readonly header: ReplayHeader;
+    private readonly parameter: ReplayParameter;
+    private readonly scriptName: string;
     private readonly playerNames: string[];
 
     private constructor(nativeReplay: NativeReplay) {
         this.native = nativeReplay;
-        this.replayHeader = this.native.getHeaderInformation();
-        this.replayParameter = this.native.getParameters();
+        this.header = this.native.getHeaderInformation();
+        this.parameter = this.native.getParameters();
         this.playerNames = this.native.getPlayerNames();
-        this.replayScriptName = this.native.getScriptName();
+        this.scriptName = this.native.getScriptName();
     }
 
-    public getReplayHeader() {
-        return { ...this.replayHeader };
+    public getHeader() {
+        return { ...this.header };
     }
     public getPlayerNames() {
         return [...this.playerNames];
     }
-    public getReplayParameter() {
-        return { ...this.replayParameter };
+    public getParameter() {
+        return { ...this.parameter };
     }
-    public getReplayScriptName() {
-        return this.replayScriptName;
+    public getScriptName() {
+        return this.scriptName;
     }
 }
