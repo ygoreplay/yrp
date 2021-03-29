@@ -33,6 +33,9 @@ private:
 	ReplayParameters parameters;
 	std::vector<std::u16string> playerNames;
 	std::string scriptName;
+
+	uint32_t homePlayerCount;
+	uint32_t awayPlayerCount;
 };
 
 #endif

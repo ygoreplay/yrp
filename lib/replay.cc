@@ -21,7 +21,7 @@ Napi::Object Replay::NewInstance(Napi::Env env, Napi::Value arg) {
 }
 
 Replay::Replay(const Napi::CallbackInfo& info): 
-	Napi::ObjectWrap<Replay>(info), buffer(nullptr), header(nullptr), decompressedBuffer(nullptr) {
+	Napi::ObjectWrap<Replay>(info), buffer(nullptr), header(nullptr), decompressedBuffer(nullptr), homePlayerCount(0), awayPlayerCount(0) {
 	auto env = info.Env();
 	if (info.Length() != 1) {
 		Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
@@ -104,22 +104,35 @@ void Replay::parseHeaderInformation(Napi::Env& env) {
 	}
 }
 void Replay::parsePlayerNames(Napi::Env& env) {
-	uint32_t playerCount = 0;
+    uint32_t playerCount = 0;
+    char16_t nameBuffer[20];
 	if (this->header->flag & REPLAY_SINGLE_MODE) {
-		playerCount = 2;
-	} else if (this->header->flag & REPLAY_NEWREPLAY) {
-		this->buffer->readItem(&playerCount, 1);
-	} else if (this->header->flag & REPLAY_TAG) {
-		playerCount = 4;
-	} else {
-		playerCount = 2;
+		for (size_t i = 0; i < 2; ++i) {
+            this->getName(nameBuffer);
+            this->playerNames.emplace_back(nameBuffer);
+		}
+
+		this->homePlayerCount = 1;
+		this->awayPlayerCount = 1;
 	}
 
-	char16_t nameBuffer[20];
-	for (uint32_t i = 0; i < playerCount; ++i) {
-		this->getName(nameBuffer);
-		this->playerNames.emplace_back(nameBuffer);
-	}
+    auto parse = [this](uint32_t& count) {
+        if (this->header->flag & REPLAY_NEWREPLAY)
+            count = this->decompressedBuffer->read<uint32_t>();
+        else if (this->header->flag & REPLAY_TAG)
+            count = 2;
+        else
+            count = 1;
+
+        for (uint32_t i = 0; i < count; i++) {
+			char16_t namebuf[20];
+            this->getName(namebuf);
+            this->playerNames.emplace_back(namebuf);
+        }
+    };
+
+	parse(this->homePlayerCount);
+	parse(this->awayPlayerCount);
 }
 void Replay::parseParams(Napi::Env& env) {
 //     params = { 0 };
