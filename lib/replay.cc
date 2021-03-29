@@ -3,8 +3,10 @@
 Napi::Object Replay::Init(Napi::Env env, Napi::Object exports) {
 	Napi::Function func = DefineClass(env, "Replay", {
 		InstanceMethod("getHeaderInformation", &Replay::getHeaderInformation),
-		InstanceMethod("getPlayerNames", &Replay::getPlayerNames),
-	});
+        InstanceMethod("getPlayerNames", &Replay::getPlayerNames),
+        InstanceMethod("getScriptName", &Replay::getScriptName),
+        InstanceMethod("getParameters", &Replay::getParameters),
+    });
 	Napi::FunctionReference* constructor = new Napi::FunctionReference();
 	*constructor = Napi::Persistent(func);
 	env.SetInstanceData(constructor);
@@ -32,10 +34,12 @@ Replay::Replay(const Napi::CallbackInfo& info):
 	auto buffer = info[0].As<Napi::Buffer<std::uint8_t>>();
 	auto bufferData = buffer.Data();
 
+	this->parameters = { 0 };
 	this->buffer = new Buffer(bufferData, buffer.ByteLength());
 	this->parseHeaderInformation(env);
 	this->decompressData(env);
 	this->parsePlayerNames(env);
+	this->parseParams(env);
 }
 Replay::~Replay() {
 	if (this->buffer) {
@@ -76,6 +80,22 @@ Napi::Value Replay::getPlayerNames(const Napi::CallbackInfo& info) {
 
 	return playerNames;
 }
+Napi::Value Replay::getParameters(const Napi::CallbackInfo& info) {
+    auto env = info.Env();
+    auto parameters = Napi::Object::New(env);
+
+	parameters.Set(Napi::String::New(env, "startLP"), Napi::Number::New(env, this->parameters.startLP));
+	parameters.Set(Napi::String::New(env, "startHand"), Napi::Number::New(env, this->parameters.startHand));
+    parameters.Set(Napi::String::New(env, "drawCount"), Napi::Number::New(env, this->parameters.drawCount));
+    parameters.Set(Napi::String::New(env, "duelFlags"), Napi::Number::New(env, this->parameters.duelFlags));
+
+	return parameters;
+}
+
+Napi::Value Replay::getScriptName(const Napi::CallbackInfo& info) {
+    auto env = info.Env();
+	return Napi::String::New(env, this->scriptName.c_str());
+}
 
 void Replay::parseHeaderInformation(Napi::Env& env) {
 	this->header = new ReplayHeader();
@@ -99,6 +119,41 @@ void Replay::parsePlayerNames(Napi::Env& env) {
 	for (uint32_t i = 0; i < playerCount; ++i) {
 		this->getName(nameBuffer);
 		this->playerNames.emplace_back(nameBuffer);
+	}
+}
+void Replay::parseParams(Napi::Env& env) {
+//     params = { 0 };
+//     if (pheader.id == REPLAY_YRP1) {
+//         params.start_lp = Read<uint32_t>();
+//         params.start_hand = Read<uint32_t>();
+//         params.draw_count = Read<uint32_t>();
+//     }
+//     if (pheader.flag & REPLAY_64BIT_DUELFLAG)
+//         params.duel_flags = Read<uint64_t>();
+//     else
+//         params.duel_flags = Read<uint32_t>();
+//     if (pheader.flag & REPLAY_SINGLE_MODE && pheader.id == REPLAY_YRP1) {
+//         size_t slen = Read<uint16_t>();
+//         scriptname.resize(slen);
+//         ReadData(&scriptname[0], slen);
+//     }
+
+	if (this->header->id == REPLAY_YRP1) {
+        this->parameters.startLP = this->decompressedBuffer->read<uint32_t>();
+        this->parameters.startHand = this->decompressedBuffer->read<uint32_t>();
+        this->parameters.drawCount = this->decompressedBuffer->read<uint32_t>();
+    }
+
+	if (this->header->flag & REPLAY_64BIT_DUELFLAG) {
+        this->parameters.duelFlags = this->decompressedBuffer->read<uint64_t>();
+	} else {
+        this->parameters.duelFlags = this->decompressedBuffer->read<uint32_t>();
+	}
+
+	if (this->header->flag & REPLAY_SINGLE_MODE && this->header->id == REPLAY_YRP1) {
+		std::size_t len = this->decompressedBuffer->read<uint16_t>();
+		this->scriptName.resize(len);
+		this->decompressedBuffer->readItem(&scriptName[0], len);
 	}
 }
 void Replay::decompressData(Napi::Env& env) {

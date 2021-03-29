@@ -14,11 +14,14 @@ public:
 private:
 	Napi::Value getHeaderInformation(const Napi::CallbackInfo& info);
 	Napi::Value getPlayerNames(const Napi::CallbackInfo& info);
+	Napi::Value getParameters(const Napi::CallbackInfo& info);
+	Napi::Value getScriptName(const Napi::CallbackInfo& info);
 	
 // -> C++
 private:
 	void parseHeaderInformation(Napi::Env& env);
 	void parsePlayerNames(Napi::Env& env);
+	void parseParams(Napi::Env& env);
 	void decompressData(Napi::Env& env);
 	void getName(char16_t* data);
 
@@ -27,7 +30,9 @@ private:
 	Buffer* decompressedBuffer;
 	ReplayHeader* header;
 
+	ReplayParameters parameters;
 	std::vector<std::u16string> playerNames;
+	std::string scriptName;
 };
 
 #endif

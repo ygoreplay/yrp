@@ -54,3 +54,14 @@ Object {
   "version": 4946,
 }
 `;
+
+exports[`yrp should retrieve replay parameters 1`] = `
+Object {
+  "drawCount": 1,
+  "duelFlags": 327680,
+  "startHand": 5,
+  "startLP": 8000,
+}
+`;
+
+exports[`yrp should retrieve replay script name 1`] = `""`;

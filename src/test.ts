@@ -9,4 +9,6 @@ import { Replay } from ".";
 
     console.log(replay.getReplayHeader());
     console.log(replay.getPlayerNames());
+    console.info(replay.getReplayScriptName());
+    console.info(replay.getReplayParameter());
 })();

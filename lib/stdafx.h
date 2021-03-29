@@ -9,6 +9,7 @@
 
 #include "buffer.h"
 
+#include "replay-parameters.h"
 #include "replay-header.h"
 #include "replay.h"
 
