@@ -36,4 +36,11 @@ describe("yrp", () => {
 
         expect(replay.getScriptName()).toMatchSnapshot();
     });
+
+    it("should parse replay decks", () => {
+        const originalFileBuffer = fs.readFileSync(path.join(process.cwd(), "./res/yrp-basic.yrp"));
+        const replay = Replay.fromBuffer(originalFileBuffer);
+
+        expect(replay.getDecks()).toMatchSnapshot();
+    });
 });
