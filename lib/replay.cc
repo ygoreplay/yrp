@@ -135,22 +135,6 @@ void Replay::parsePlayerNames(Napi::Env& env) {
 	parse(this->awayPlayerCount);
 }
 void Replay::parseParams(Napi::Env& env) {
-//     params = { 0 };
-//     if (pheader.id == REPLAY_YRP1) {
-//         params.start_lp = Read<uint32_t>();
-//         params.start_hand = Read<uint32_t>();
-//         params.draw_count = Read<uint32_t>();
-//     }
-//     if (pheader.flag & REPLAY_64BIT_DUELFLAG)
-//         params.duel_flags = Read<uint64_t>();
-//     else
-//         params.duel_flags = Read<uint32_t>();
-//     if (pheader.flag & REPLAY_SINGLE_MODE && pheader.id == REPLAY_YRP1) {
-//         size_t slen = Read<uint16_t>();
-//         scriptname.resize(slen);
-//         ReadData(&scriptname[0], slen);
-//     }
-
 	if (this->header->id == REPLAY_YRP1) {
         this->parameters.startLP = this->decompressedBuffer->read<uint32_t>();
         this->parameters.startHand = this->decompressedBuffer->read<uint32_t>();
