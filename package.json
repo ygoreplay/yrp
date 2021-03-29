@@ -17,7 +17,7 @@
         ]
     },
     "scripts": {
-        "install": "prebuild-install --target 3 || npm run build:addons",
+        "install": "prebuild-install -r napi -t 3 || npm run build:addons",
         "dev": "rimraf dist/ dist.es2015/ && tsc --watch",
         "lint": "eslint \"src/**/*.ts\" --fix",
         "build": "rimraf dist/ dist.es2015/ && tsc && tsc -P tsconfig.es2015.json",
