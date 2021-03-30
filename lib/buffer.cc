@@ -9,14 +9,14 @@ Buffer::~Buffer(void) {
 }
 
 bool Buffer::checkIfCursorMovable(size_t byteLength) {
-	if (this->cursor + byteLength >= this->byteLength) {
+	if (this->cursor + byteLength > this->byteLength) {
 		return false;
 	}
 
 	return true;
 }
 std::size_t Buffer::moveCursorForward(size_t byteLength) {
-	if (this->cursor + byteLength >= this->byteLength) {
+	if (!this->checkIfCursorMovable(byteLength)) {
 		return false;
 	}
 
