@@ -78,7 +78,7 @@
     },
     "dependencies": {
         "bindings": "^1.5.0",
-        "fs-extra": "^9.1.0",
+        "fs-extra": "^10.0.0",
         "lodash.clonedeep": "^4.5.0",
         "node-addon-api": "^3.1.0",
         "prebuild-install": "^6.0.1",
