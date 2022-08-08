@@ -28,7 +28,7 @@ so this is a native parser project for node environment. this means I want to li
 
 ## Dependencies
 
-- [Node.js](https://nodejs.org/) >= 16
+- [Node.js](https://nodejs.org/) >= 14
 
 ## Installation
 
