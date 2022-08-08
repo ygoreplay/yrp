@@ -25,16 +25,16 @@ jobs:
                       container: ubuntu:18.04
                       nodejs_version: 16
                     - os: ubuntu-20.04
-                      container: ubuntu:18.04
+                      container: ubuntu:20.04
                       nodejs_version: 18
 
                     - os: ubuntu-20.04
-                      container: node:14-alpine3.11
+                      container: node:14-alpine3.15
                       prebuild: true
                     - os: ubuntu-20.04
-                      container: node:16-alpine3.11
+                      container: node:16-alpine3.15
                     - os: ubuntu-20.04
-                      container: node:18-alpine3.11
+                      container: node:18-alpine3.15
 
                     - os: macos-10.15
                       nodejs_version: 14
