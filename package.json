@@ -7,6 +7,9 @@
     "typings": "dist/index.d.ts",
     "jsnext:main": "dist.es2015/index.js",
     "module": "dist.es2015/index.js",
+    "engines": {
+        "node": ">=16.0.0"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/ygoreplay/yrp.git"
