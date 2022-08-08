@@ -32,8 +32,6 @@ so this is a native parser project for node environment. this means I want to li
 
 ## Installation
 
-*Note: you should use Node with version >= 12.*
-
 ```
 npm i yrp
 ```
